@@ -15,10 +15,13 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ##########################################################################################
 
 # install brew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew_bin=$(which brew) 2>&1 > /dev/null
+if [[ $? != 0 ]]; then
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+  brew update
+fi
 
-# update brew
-brew update
 # updates brew packages
 brew upgrade
 
@@ -66,12 +69,43 @@ sudo defaults write /Library/Preferences/com.apple.alf stealthenabled -int 1
 # disable guest account
 sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false
 
+# Disable the “Are you sure you want to open this application?” dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Disable remote login
+sudo systemsetup -setremotelogin off
+
+# block unwanted requests
+sudo cp ./hosts /etc/hosts
+
 ##########################################################################################
 # SYSTEM
 ##########################################################################################
 
 # activate 'locate'
 sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist > /dev/null 2>&1
+
+# running "Set computer name (as done via System Preferences → Sharing)"
+sudo scutil --set ComputerName "maurice"
+sudo scutil --set HostName "maurice"
+sudo scutil --set LocalHostName "maurice"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "maurice"
+
+# running "Stop iTunes from responding to the keyboard media keys"
+launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
+
+# require password immediately after sleep or screen saver begins
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+# empty Trash securely by default
+defaults write com.apple.finder EmptyTrashSecurely -bool true
+
+# visualize CPU usage in the Activity Monitor Dock icon
+defaults write com.apple.ActivityMonitor IconType -int 5
+
+# show all files in finder
+defaults write com.apple.finder AppleShowAllFiles YES
 
 ##########################################################################################
 # NVM
