@@ -34,11 +34,15 @@ brew install yarn --without-node
 ##########################################################################################
 
 # set zsh as default shell
-sudo chsh -s $(which zsh)
-sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
+CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
+if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
+  sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
+fi
 
 # install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+if [ ! -f $HOME/.oh-my-zsh/oh-my-zsh.sh ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
 
 # install custom thme
 cp ./fudge.zsh-theme $HOME/.oh-my-zsh/custom/themes
@@ -75,8 +79,22 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 # Disable remote login
 sudo systemsetup -setremotelogin off
 
+# make the user owner of the hosts file
+sudo chown $USER /etc/hosts 
+
 # block unwanted requests
-sudo cp ./hosts /etc/hosts
+if ! command grep -qc 'http://someonewhocares.org/hosts/' /etc/hosts; then
+  cp /etc/hosts ./hosts.backup # backup any existing host file
+  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest 
+  echo "#=====END SOMEONEWHOCARES=====#" >> ./hosts # add a delimiter so we can update the hosts file regularly
+else 
+  cat /etc/hosts | sed -e/=====END\ SOMEONEWHOCARES=====/\{ -e:1 -en\;b1 -e\} -ed  > ./hosts.backup # backup any existing host file
+  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest 
+fi
+
+cat ./hosts.backup >> ./hosts # append the backup host file to the new host file
+cp ./hosts /etc/hosts # make the new hosts file the default
+rm ./hosts.backup ./hosts # remove the backup
 
 ##########################################################################################
 # SYSTEM
@@ -114,8 +132,9 @@ defaults write com.apple.finder AppleShowAllFiles YES
 # install nvm
 sh -c "$(curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh)"
 
-# source .zshrc which has nvm path in it
-source $HOME/.zshrc
+# load nvm
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # install latest stable node version
 nvm install stable
