@@ -103,7 +103,7 @@ if command grep -qc '#=====END SOMEONEWHOCARES=====#' /etc/hosts; then
   curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest
   cat ./hosts.backup >> ./hosts # append the backup host file to the new host file
   cp ./hosts /etc/hosts # make the new hosts file the default
-  rm ./hosts.backup ./hosts # remove the backup
+  rm ./hosts # remove, but keep the backup
 fi
 
 # locale
