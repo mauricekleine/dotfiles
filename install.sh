@@ -80,16 +80,19 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 sudo systemsetup -setremotelogin off
 
 # make the user owner of the hosts file
-sudo chown $USER /etc/hosts 
+if [ ! -f /etc/hosts ]; then
+  sudo touch /etc/hosts
+fi
+sudo chown $USER /etc/hosts
 
 # block unwanted requests
 if ! command grep -qc 'http://someonewhocares.org/hosts/' /etc/hosts; then
   cp /etc/hosts ./hosts.backup # backup any existing host file
-  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest 
+  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest
   echo "#=====END SOMEONEWHOCARES=====#" >> ./hosts # add a delimiter so we can update the hosts file regularly
-else 
+else
   cat /etc/hosts | sed -e/=====END\ SOMEONEWHOCARES=====/\{ -e:1 -en\;b1 -e\} -ed  > ./hosts.backup # backup any existing host file
-  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest 
+  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest
 fi
 
 cat ./hosts.backup >> ./hosts # append the backup host file to the new host file
