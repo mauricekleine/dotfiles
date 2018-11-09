@@ -81,5 +81,5 @@ _PATH="%{$fg[green]%}%c%{$reset_color%}"
 _LIBERTY="%{$fg[blue]%}$%{$reset_color%}"
 
 setopt prompt_subst
-PROMPT='🦄  $_PATH $_LIBERTY '
+PROMPT='🦄 $_PATH $_LIBERTY '
 RPROMPT='$(fudge_git_prompt) $(nvm_prompt_info)'
