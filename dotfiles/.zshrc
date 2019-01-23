@@ -109,3 +109,6 @@ fi
 # locale
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+# git extras
+source /usr/local/opt/git-extras/share/git-extras/git-extras-completion.zsh
