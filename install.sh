@@ -26,7 +26,7 @@ fi
 brew upgrade
 
 # install new packages
-brew install git tmux zsh
+brew install git git-extras tmux zsh
 brew install yarn --without-node
 
 ##########################################################################################
