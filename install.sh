@@ -46,6 +46,9 @@ fi
 # install custom thme
 cp ./fudge.zsh-theme $HOME/.oh-my-zsh/custom/themes
 
+# install antigen
+brew install antigen
+
 ##########################################################################################
 # DOTFILES
 ##########################################################################################
