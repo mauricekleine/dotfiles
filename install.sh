@@ -25,11 +25,11 @@ fi
 # updates brew packages
 brew upgrade
 
-# install new packages
-brew install git git-extras tmux zsh yarn
+# install packages
+brew install antigen tmux zsh
 
 ##########################################################################################
-# ZSH / OH MY ZSH
+# ZSH
 ##########################################################################################
 
 # set zsh as default shell
@@ -37,17 +37,6 @@ CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
 if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
   sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
 fi
-
-# install oh-my-zsh
-if [ ! -f $HOME/.oh-my-zsh/oh-my-zsh.sh ]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-fi
-
-# install custom thme
-cp ./fudge.zsh-theme $HOME/.oh-my-zsh/custom/themes
-
-# install antigen
-brew install antigen
 
 ##########################################################################################
 # DOTFILES
@@ -129,23 +118,6 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 
 # show all files in finder
 defaults write com.apple.finder AppleShowAllFiles YES
-
-##########################################################################################
-# NVM
-##########################################################################################
-
-# install nvm
-sh -c "$(curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh)"
-
-# load nvm
-NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# install latest stable node version
-nvm install stable
-
-# echo latest stable node version
-node -v
 
 ##########################################################################################
 # ITERM
