@@ -7,12 +7,16 @@ antigen use oh-my-zsh
 # plugins 
 antigen bundle git
 antigen bundle git-extras
-antigen bundle nvm
-antigen bundle tmux
-antigen bundle zsh-users/zsh-autosuggestions
 
-# plugin configuration
+export NVM_COMPLETION=true
+export NVM_LAZY_LOAD=true
+antigen bundle lukechilds/zsh-nvm
+antigen bundle nvm
+
+antigen bundle tmux
 ZSH_TMUX_AUTOSTART=true
+
+antigen bundle zsh-users/zsh-autosuggestions
 
 # theme
 antigen theme mauricekleine/fudge
