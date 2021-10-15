@@ -1,25 +1,32 @@
 # activate antigen
 source /usr/local/share/antigen/antigen.zsh
 
-# load the oh-my-zsh's library.
+# oh-my-zsh
 antigen use oh-my-zsh
 
-# plugins 
+# git 
 antigen bundle git
 antigen bundle git-extras
 
+# nvm 
 export NVM_COMPLETION=true
 export NVM_LAZY_LOAD=true
 antigen bundle lukechilds/zsh-nvm
-antigen bundle nvm
 
-antigen bundle tmux
+# tmux 
 ZSH_TMUX_AUTOSTART=true
+antigen bundle tmux
 
+# utilities 
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
 
 # theme
-antigen theme mauricekleine/fudge
+antigen theme spaceship-prompt/spaceship-prompt
+SPACESHIP_CHAR_SYMBOL="🦄 ~ "
+
+# syntax highlighting - must be last plugin!
+antigen bundle zsh-users/zsh-syntax-highlighting
 
 # tell Antigen that we're done.
 antigen apply
