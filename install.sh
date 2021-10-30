@@ -119,10 +119,4 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 # show all files in finder
 defaults write com.apple.finder AppleShowAllFiles YES
 
-##########################################################################################
-# ITERM
-##########################################################################################
-
-open "solarized-dark.itermcolors"
-
 echo "done!"
