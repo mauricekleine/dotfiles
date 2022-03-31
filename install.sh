@@ -18,6 +18,8 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 brew_bin=$(which brew) 2>&1 > /dev/null
 if [[ $? != 0 ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   brew update
 fi
@@ -69,26 +71,6 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 
 # Disable remote login
 sudo systemsetup -setremotelogin off
-
-# make the user owner of the hosts file
-if [ ! -f /etc/hosts ]; then
-  sudo touch /etc/hosts
-fi
-sudo chown $USER /etc/hosts
-
-# block unwanted requests
-if ! command grep -qc 'http://someonewhocares.org/hosts/' /etc/hosts; then
-  cp /etc/hosts ./hosts.backup # backup any existing host file
-  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest
-  echo "#=====END SOMEONEWHOCARES=====#" >> ./hosts # add a delimiter so we can update the hosts file regularly
-else
-  cat /etc/hosts | sed -e/=====END\ SOMEONEWHOCARES=====/\{ -e:1 -en\;b1 -e\} -ed  > ./hosts.backup # backup any existing host file
-  curl -fsSL "https://someonewhocares.org/hosts/hosts" > ./hosts # download latest
-fi
-
-cat ./hosts.backup >> ./hosts # append the backup host file to the new host file
-cp ./hosts /etc/hosts # make the new hosts file the default
-rm ./hosts.backup ./hosts # remove the backup
 
 ##########################################################################################
 # SYSTEM
