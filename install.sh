@@ -92,6 +92,9 @@ launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/nul
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
+# prevents resizing the dock
+defaults write com.apple.Dock size-immutable -bool true
+
 # empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
 
