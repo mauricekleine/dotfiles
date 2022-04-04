@@ -1,3 +1,5 @@
 [user]
-	email = hey@mauricekleine.com
-	name = Maurice Kleine
+        email = hey@mauricekleine.com
+        name = Maurice Kleine
+[commit]
+        gpgsign = true
