@@ -1,7 +1,5 @@
-# Losely based on https://github.com/atomantic/dotfiles
-
 ##########################################################################################
-# SUDO
+# ENTER SUDO
 ##########################################################################################
 
 # Go sudo
@@ -28,7 +26,7 @@ fi
 brew upgrade
 
 # install packages
-brew install antigen tmux zsh
+brew install antigen gnupg pnpm tmux zsh
 
 ##########################################################################################
 # ZSH
@@ -103,5 +101,41 @@ defaults write com.apple.ActivityMonitor IconType -int 5
 
 # show all files in finder
 defaults write com.apple.finder AppleShowAllFiles YES
+
+##########################################################################################
+# PROJECTS FOLDER
+##########################################################################################
+
+[ ! -d "~/Projects" ] && mkdir ~/Projects
+
+##########################################################################################
+# HOSTS
+##########################################################################################
+
+cd ~/Projects
+git clone https://github.com/StevenBlack/hosts.git
+cd ~/Projects/hosts
+pip3 install --user -r requirements.txt
+python3 updateHostsFile.py --auto --extensions fakenews gambling porn --replace
+
+##########################################################################################
+# SSH
+##########################################################################################
+
+ssh-keygen -t ed25519 -C "hey@mauricekleine.com"
+mv ./.ssh/config ~/.ssh/config
+eval "$(ssh-agent -s)"
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+
+##########################################################################################
+# GPG
+##########################################################################################
+
+gpg --full-generate-key
+git config --global commit.gpgsign true
+
+##########################################################################################
+# FIN
+##########################################################################################
 
 echo "done!"
