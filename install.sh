@@ -26,17 +26,7 @@ fi
 brew upgrade
 
 # install packages
-brew install antigen gnupg pnpm tmux zsh
-
-##########################################################################################
-# ZSH
-##########################################################################################
-
-# set zsh as default shell
-CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
-if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
-  sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
-fi
+brew install antigen gnupg pnpm tmux
 
 ##########################################################################################
 # DOTFILES
