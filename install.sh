@@ -22,26 +22,15 @@ else
   brew update
 fi
 
-# updates brew packages
+# bundle
 brew upgrade
-
-# install packages
-brew install antigen gnupg pnpm tmux
+brew bundle
 
 ##########################################################################################
 # DOTFILES
 ##########################################################################################
 
-pushd dotfiles > /dev/null 2>&1
-
-for file in .*; do
-  if [[ $file == "." || $file == ".." ]]; then
-    continue
-  fi
-    cp $file ~/
-done
-
-popd > /dev/null 2>&1
+stow --verbose --target=$HOME --restow */
 
 ##########################################################################################
 # SECURITY
@@ -72,6 +61,9 @@ sudo scutil --set ComputerName "maurice"
 sudo scutil --set HostName "maurice"
 sudo scutil --set LocalHostName "maurice"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "maurice"
+
+# disable the sound effects on boot
+sudo nvram SystemAudioVolume=" "
 
 # running "Stop iTunes from responding to the keyboard media keys"
 launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
@@ -113,7 +105,6 @@ python3 updateHostsFile.py --auto --extensions fakenews gambling porn --replace
 ##########################################################################################
 
 ssh-keygen -t ed25519 -C "hey@mauricekleine.com"
-mv ./.ssh/config ~/.ssh/config
 eval "$(ssh-agent -s)"
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 
