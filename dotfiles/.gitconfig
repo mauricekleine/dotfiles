@@ -1,8 +1,8 @@
 [commit]
         gpgsign = true
 [push]
-	default = simple
 	autoSetupRemote = true
+	default = simple
 [user]
         email = hey@mauricekleine.com
         name = Maurice Kleine

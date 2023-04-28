@@ -13,9 +13,11 @@ export NVM_COMPLETION=true
 export NVM_LAZY_LOAD=true
 antigen bundle lukechilds/zsh-nvm
 
-# tmux 
-ZSH_TMUX_AUTOSTART=true
-antigen bundle tmux
+# tmux (only run in interactive shell)
+if [[ -t 1 ]]; then
+  ZSH_TMUX_AUTOSTART=true
+  antigen bundle tmux
+fi
 
 # utilities 
 antigen bundle zsh-users/zsh-autosuggestions
@@ -74,4 +76,9 @@ export LC_ALL=en_US.UTF-8
 # pnpm
 export PNPM_HOME="/Users/maurice/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+
+# github copilot cli
+eval "$(github-copilot-cli alias -- "$0")"
+
+# docker
+source $HOME/.docker/init-zsh.sh || true
