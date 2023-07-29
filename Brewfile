@@ -1,4 +1,4 @@
-tap "homebrew/cask-fonts "
+tap "homebrew/cask-fonts"
 
 brew "antigen"
 brew "font-fira-mono-for-powerline"
