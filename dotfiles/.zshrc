@@ -79,3 +79,4 @@ export PATH="$PNPM_HOME:$PATH"
 
 # github copilot cli
 eval "$(github-copilot-cli alias -- "$0")"
+
