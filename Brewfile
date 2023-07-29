@@ -2,6 +2,7 @@ tap "homebrew/cask-fonts"
 
 brew "antigen"
 brew "font-fira-mono-for-powerline"
+brew "gh"
 brew "gnupg"
 brew "pnpm"
 brew "stow"
