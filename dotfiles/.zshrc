@@ -76,7 +76,3 @@ export LC_ALL=en_US.UTF-8
 # pnpm
 export PNPM_HOME="/Users/maurice/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
-
-# github copilot cli
-eval "$(github-copilot-cli alias -- "$0")"
-
